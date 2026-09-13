@@ -75,3 +75,23 @@ What this shows:
 Limits: three runs per round is a small sample, the `Modal` check follows the
 skill's own advice, and runs with skills sometimes also load Claude Code's
 built-in `run` skill, which tries to launch the app and is denied.
+
+### Round 3: harder cases
+
+`load-error` gave no signal, so two cases aimed at mistakes the model might make
+without the skill were added and run with the current skill text.
+
+| Case | With skills | Without | `egui-ui-design` loaded | Cost with | Cost without |
+|---|---|---|---|---|---|
+| `shortcut-menu` | 3/3 | 3/3 | 0/3 | $0.50 | $0.56 |
+| `settings-form` | 3/3 | 0/3 | 3/3 | $1.28 | $0.63 |
+
+- **`settings-form`**: every run without skills left Save looking like every
+  other button. Every run with skills loaded `egui-ui-design` and marked Save
+  with the selection colours. The check follows the skill's own advice, so it
+  shows the advice is used, not that users prefer the result. No run in either
+  arm labelled a button "OK" or "Submit".
+- **`shortcut-menu`**: no difference, and the skill did not load. The model
+  already uses `Modifiers::COMMAND` and shows the shortcut with
+  `shortcut_text` without help. Like `load-error`, this case records something
+  the model already does well.

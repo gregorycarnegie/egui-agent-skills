@@ -69,6 +69,20 @@ CASES = {
         "forbid": [r"Color32::(RED|from_rgb)", r":\?\}", r"(?i)something went wrong|sorry|oops"],
         "require": [r"error_fg_color"],
     },
+    # egui-ui-design: shortcuts use COMMAND (Cmd on macOS) and show in the menu.
+    "shortcut-menu": {
+        "prompt": "Add a Save entry to the File menu that sets a saved flag, and give it "
+        "the usual keyboard shortcut.",
+        "forbid": [r"modifiers\.ctrl\b", r"Modifiers::CTRL\b", r"fn update\s*\("],
+        "require": [r"Modifiers::COMMAND|modifiers\.command", r"shortcut_text"],
+    },
+    # egui-ui-design: the primary button is marked, and buttons name their action.
+    "settings-form": {
+        "prompt": "Add a Settings window with a name field, a choice between dark and light "
+        "theme, and Save and Cancel buttons.",
+        "forbid": [r'"(OK|Ok|Submit)"', r"fn update\s*\("],
+        "require": [r"selection\.bg_fill"],
+    },
 }
 
 TOOLS = ["Read", "Edit", "Write", "Glob", "Grep", "Skill", "Bash(cargo:*)"]

@@ -62,6 +62,14 @@ else is optional.
 
 ## Release
 
-The plugin version appears in four places: `.claude-plugin/plugin.json`,
-`.claude-plugin/marketplace.json` (twice), and `gemini-extension.json`. Change
-all four together.
+Installed plugins only update when the version changes, so release every change
+users should get:
+
+1. Change the version in all four places: `.claude-plugin/plugin.json`,
+   `.claude-plugin/marketplace.json` (twice), and `gemini-extension.json`.
+2. In `CHANGELOG.md`, rename `Unreleased` to the new version and date, and add
+   its link at the bottom.
+3. Run `python scripts/check_skills.py`, commit, and push.
+4. Tag and publish the release with its CHANGELOG notes:
+   `git tag -a v<version> -m v<version>`, `git push origin v<version>`, then
+   `gh release create v<version> --verify-tag --notes-file <notes>`.

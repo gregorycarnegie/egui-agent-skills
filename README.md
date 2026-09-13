@@ -69,10 +69,11 @@ ln -s "$(pwd)/skills/egui" ~/.claude/skills/egui
 ### Codex CLI
 
 ```bash
-cp -r skills/egui ~/.codex/skills/egui
+ln -s "$(pwd)/skills/egui" ~/.codex/skills/egui
 ```
 
-Restart Codex after adding skills.
+Restart Codex after adding skills. A link picks up changes when you pull this
+repository; a copy (`cp -r`) has to be copied again after every update.
 
 ### GitHub Copilot
 
@@ -85,6 +86,26 @@ projects). Copilot also finds skills installed for Claude Code under
 ```bash
 gemini extensions install https://github.com/gregorycarnegie/egui-agent-skills
 ```
+
+## Updating
+
+New versions are described in [CHANGELOG.md](CHANGELOG.md) and published as
+[GitHub Releases](https://github.com/gregorycarnegie/egui-agent-skills/releases).
+To hear about them, watch the repository and choose Releases.
+
+- **Claude Code plugin**: refresh the marketplace, update the plugin, then
+  restart Claude Code.
+
+  ```bash
+  claude plugin marketplace update egui-skills
+  claude plugin update egui-development-skills
+  ```
+
+- **Linked skills** (Claude Code, Codex, Copilot): run `git pull` in your clone.
+- **Copied skills**: run `git pull`, then copy the skill folders again.
+- **Gemini CLI**: run `gemini extensions update egui-skills`, or
+  `gemini extensions update --all`. To update automatically, add
+  `--auto-update` to the install command.
 
 ## License
 

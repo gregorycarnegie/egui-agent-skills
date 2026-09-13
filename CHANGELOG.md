@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.3.0] - 2026-09-13
 
 ### Added
 
@@ -8,8 +8,11 @@
   screen with `egui_kittest` in both themes and reviews the PNGs, and a rule
   that frames mark real groups only. The ideas come from the frontend-design
   skill, rewritten for egui.
-- Eval cases `delete-confirm` and `load-error` for `egui-ui-design`, and a column
-  showing which skills each run loaded.
+- Eval cases `delete-confirm`, `load-error`, `shortcut-menu`, and
+  `settings-form` for `egui-ui-design`, and a column showing which skills each
+  run loaded.
+- An Updating section in the README and release steps in CONTRIBUTING. Every
+  version now has a GitHub Release.
 - CI runs the render test with Mesa's lavapipe software Vulkan driver.
 
 ### Changed
@@ -20,12 +23,13 @@
   keyboard zoom, and accessible names for custom widgets. Every API it names is
   compile-checked, and its behaviour claims were checked against the egui
   0.36.2 source.
-
 - `egui-ui-design`'s description now names everyday tasks (dialogs,
   confirmations, forms, error messages), and the `egui` skill points to it for
   anything users see. With the old description it loaded in none of 6 eval
-  runs; with the new one it loads for confirmation dialogs, but not yet for
-  error messages.
+  runs. With the new one it loads for confirmation dialogs and settings forms,
+  but not yet for error messages or menu shortcuts.
+- The Codex install instructions link the skill instead of copying it, so
+  `git pull` updates it.
 - `scripts/check_skills.py` writes errors to stderr.
 
 ### Removed
@@ -97,5 +101,6 @@
   `show_animated_inside`, and viewport callback arguments.
 - Replaced installation URL placeholders with the repository address.
 
+[0.3.0]: https://github.com/gregorycarnegie/egui-agent-skills/releases/tag/v0.3.0
 [0.2.0]: https://github.com/gregorycarnegie/egui-agent-skills/releases/tag/v0.2.0
 [0.1.0]: https://github.com/gregorycarnegie/egui-agent-skills/releases/tag/v0.1.0
