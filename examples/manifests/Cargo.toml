@@ -1,5 +1,6 @@
 # Every TOML block from the skills, verbatim. CI resolves this workspace, which
-# fails on a crate version or feature name that does not exist.
+# fails on a crate version or feature name that does not exist. Each crate has an
+# empty src/lib.rs only because cargo refuses to load a package with no target.
 
 # skills/eframe-project/SKILL.md "Workspace split"
 [workspace]

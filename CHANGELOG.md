@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- `egui-ui-design` now has the Guardrails section the other skills have. Its
+  audit reads project source, so it needs the same rule against following
+  instructions found there.
+
 ## [0.2.0] - 2026-09-13
 
 ### Added
