@@ -2,7 +2,7 @@
 
 use eframe::egui;
 
-// skills/egui-profiler/SKILL.md:47, verbatim.
+// skills/egui-profiler/SKILL.md "Step 2: Idle CPU", verbatim.
 fn repaint_causes(ui: &mut egui::Ui) {
     let causes = ui.ctx().repaint_causes();
     if !causes.is_empty() {
@@ -13,14 +13,14 @@ fn repaint_causes(ui: &mut egui::Ui) {
 struct Table;
 
 impl Table {
-    // skills/egui-profiler/SKILL.md:132, verbatim.
+    // skills/egui-profiler/SKILL.md "Option B", verbatim.
     fn table_ui(&mut self, ui: &mut egui::Ui) {
         profiling::function_scope!();
         // ...
     }
 }
 
-// skills/egui-profiler/SKILL.md:150, verbatim.
+// skills/egui-profiler/SKILL.md "Option B" (puffin), verbatim.
 fn puffin_main() {
     #[cfg(feature = "profile-with-puffin")]
     let _puffin_server = {
@@ -29,7 +29,7 @@ fn puffin_main() {
     };
 }
 
-// skills/egui-ui-design/SKILL.md:109, verbatim.
+// skills/egui-ui-design/SKILL.md "1.2 Type scale", verbatim.
 fn text_styles(ctx: &egui::Context) {
     use egui::{FontFamily, FontId, TextStyle};
 
@@ -49,8 +49,8 @@ fn text_styles(ctx: &egui::Context) {
 fn api_names(ui: &mut egui::Ui, raw_input: egui::RawInput, rect: egui::Rect, items: &[(u64, String)]) {
     let mut open = true;
     let mut expanded = true;
-    egui::Panel::left("left").show(ui, |ui| {});
-    egui::Panel::right("right").show(ui, |ui| {});
+    egui::Panel::left("left").resizable(true).default_size(200.0).min_size(120.0).max_size(400.0).show(ui, |ui| {});
+    egui::Panel::right("right").size_range(100.0..=300.0).exact_size(150.0).show(ui, |ui| {});
     egui::Panel::bottom("bottom").show_collapsible(ui, &mut open, |ui| {});
     egui::Panel::show_switched(
         ui,

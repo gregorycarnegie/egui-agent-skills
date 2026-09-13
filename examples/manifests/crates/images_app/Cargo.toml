@@ -1,0 +1,8 @@
+[package]
+name = "images_app"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+egui_extras = { version = "0.36", features = ["image"] } # add "svg" for SVG files
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }

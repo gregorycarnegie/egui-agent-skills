@@ -10,7 +10,6 @@ compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents.
 metadata:
   author: egui-skills
-  version: "1.0"
   egui-version: "0.36"
   category: conceptual
 ---

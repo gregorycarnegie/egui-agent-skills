@@ -3,16 +3,15 @@ name: egui-review
 description: >-
   Reviews egui and eframe Rust code when the user asks to review, check,
   audit, or look over GUI code, or before committing UI changes. Runs cargo
-  clippy, then four review agents in parallel: frame loop and repaint, IDs and
-  widget state, API and Rust correctness, UX and accessibility. Reports only
-  high-confidence issues. Read-only.
+  clippy, then four review passes (parallel agents for large changes): frame
+  loop and repaint, IDs and widget state, API and Rust correctness, UX and
+  accessibility. Reports only high-confidence issues. Read-only.
 license: MIT AND BSD-3-Clause
 compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents that
   can run cargo.
 metadata:
   author: egui-skills
-  version: "1.0"
   egui-version: "0.36"
   category: review
 ---
@@ -67,9 +66,15 @@ so the agents do not report them again.
 
 ## Phase 2: Four review agents in parallel
 
-Start all four agents at the same time, each named after its mission (for
-example "Agent 1: Frame loop"). In Claude Code, use general-purpose subagents. In
-other tools, run each mission as a separate analysis pass. Give every agent:
+**Small changes: no agents.** In diff scope with fewer than about 150 changed
+lines, or in codebase scope with fewer than about 300 lines of egui code, do not
+start agents. Work through the four missions yourself in one pass, using the same
+confidence table and report format.
+
+Otherwise, start all four agents at the same time, each named after its mission
+(for example "Agent 1: Frame loop"). In Claude Code, use general-purpose
+subagents. In other tools, run each mission as a separate analysis pass. Give
+every agent:
 
 1. The list of files in scope, and the diff in diff scope.
 2. The Phase 1 output.

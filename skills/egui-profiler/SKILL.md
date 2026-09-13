@@ -12,7 +12,6 @@ compatibility: >-
   and a profiler on the user's machine.
 metadata:
   author: egui-skills
-  version: "1.0"
   egui-version: "0.36"
   category: tool
 argument-hint: "[idle-cpu|frame-time|startup] [<package-or-binary>]"

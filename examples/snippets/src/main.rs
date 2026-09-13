@@ -21,6 +21,7 @@ fn main() -> eframe::Result {
 }
 
 // Everything above is skills/eframe-project/SKILL.md, verbatim.
+mod async_tokio;
 mod fragments;
 #[cfg(test)]
 mod kittest_snips;

@@ -10,6 +10,7 @@ serde = { version = "1.0.229", features = ["derive"] }
 profiling = "1.0.18"
 puffin = { version = "0.20.0", optional = true }
 puffin_http = { version = "0.17.0", optional = true }
+tokio = { version = "1.53.1", features = ["rt-multi-thread", "time"] }
 
 [features]
 profile-with-puffin = ["profiling/profile-with-puffin", "dep:puffin", "dep:puffin_http"]

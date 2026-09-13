@@ -21,9 +21,16 @@ def squash(code: str) -> str:
     return "\n".join(line.strip() for line in code.splitlines() if line.strip())
 
 
-snippet_src = "\n" + "\n".join(
-    squash(p.read_text(encoding="utf-8")) for p in sorted((root / "examples/snippets/src").glob("*.rs"))
-) + "\n"
+def corpus(pattern: str) -> str:
+    files = sorted(p for p in root.glob(pattern) if "target" not in p.parts)
+    return "\n" + "\n".join(squash(p.read_text(encoding="utf-8")) for p in files) + "\n"
+
+
+# Where each fenced block language must be copied, so CI builds or resolves it.
+copies = {
+    "rust": ("examples/snippets/src", corpus("examples/snippets/src/*.rs")),
+    "toml": ("a Cargo.toml under examples/manifests", corpus("examples/manifests/**/Cargo.toml")),
+}
 
 for path in skills:
     rel = path.relative_to(root).as_posix()
@@ -58,10 +65,12 @@ for path in skills:
         errors.append(f"{rel}: over 500 lines")
     if f"| `{folder}` |" not in readme:
         errors.append(f"{rel}: no row in the README skills table")
-    for block in re.finditer(r"^[ \t]*```rust\r?\n(.*?)^[ \t]*```", text, re.DOTALL | re.MULTILINE):
-        if f"\n{squash(block.group(1))}\n" not in snippet_src:
+    for block in re.finditer(r"^[ \t]*```(rust|toml)\r?\n(.*?)^[ \t]*```", text, re.DOTALL | re.MULTILINE):
+        kind, code = block.groups()
+        where, src = copies[kind]
+        if f"\n{squash(code)}\n" not in src:
             line = text.count("\n", 0, block.start()) + 1
-            errors.append(f"{rel}:{line}: rust block is not copied into examples/snippets/src")
+            errors.append(f"{rel}:{line}: {kind} block is not copied into {where}")
 
 
 def load(name: str):

@@ -22,7 +22,6 @@ else is optional.
      Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents.
    metadata:
      author: egui-skills
-     version: "1.0"
      egui-version: "0.36"
      category: conceptual   # conceptual | review | process | tool
    ---
@@ -40,6 +39,9 @@ else is optional.
   for line (indentation may differ), with any glue it needs around it. CI
   compiles and tests that crate, and `scripts/check_skills.py` fails if a block
   is missing from it.
+- Copy every ` ```toml ` block into a `Cargo.toml` under `examples/manifests/`
+  the same way. CI resolves that workspace, which fails on a crate version or
+  feature name that does not exist.
 - **Check every API name against the crate source.** egui changes its API
   between minor versions, and models remember old names. After `cargo fetch`,
   the source is in `~/.cargo/registry/src/*/egui-<version>/src/`. Search it
@@ -51,7 +53,7 @@ else is optional.
 
 1. Run `python scripts/check_skills.py` (needs PyYAML; CI runs it on every
    push). It checks the frontmatter, the folder name, the README row, the
-   500-line limit, that every Rust block is in `examples/snippets/`, and that
+   500-line limit, that every Rust and TOML block is copied under `examples/`, and that
    the four plugin versions match.
 2. Check that every file the skill links to exists.
 3. Install the skill in an agent. Give it a real egui task that uses the trigger

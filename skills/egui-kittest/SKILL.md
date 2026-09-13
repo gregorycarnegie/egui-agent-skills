@@ -11,7 +11,6 @@ compatibility: >-
   can run cargo test.
 metadata:
   author: egui-skills
-  version: "1.0"
   egui-version: "0.36"
   category: tool
 argument-hint: "[write|run] [<file-or-test-name>]"

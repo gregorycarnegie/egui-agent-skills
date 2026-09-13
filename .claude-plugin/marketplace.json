@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Agentic engineering skills for egui and eframe development",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "egui-development-skills",
       "description": "Agentic engineering skills for Rust GUI development with egui and eframe: coding rules, code review, egui_kittest UI tests, project setup, UI design, and profiling. These skills use AI and can make mistakes. Always check the output.",
       "source": "./",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "egui-skills contributors"
       },

@@ -1,0 +1,22 @@
+# Every TOML block from the skills, verbatim. CI resolves this workspace, which
+# fails on a crate version or feature name that does not exist.
+
+# skills/eframe-project/SKILL.md "Workspace split"
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.dependencies]
+eframe = "0.36"
+egui = "0.36"
+egui_extras = "0.36"
+egui_kittest = "0.36"
+
+# skills/eframe-project/SKILL.md "Optional additions"
+[profile.dev.package."*"]
+opt-level = 2
+
+# skills/eframe-project/SKILL.md "Optional additions" and skills/egui-profiler/SKILL.md "Step 3"
+[profile.profiling]
+inherits = "release"
+debug = true

@@ -16,7 +16,7 @@ version's crate source before using them.
 | Skill | Type | Description |
 |-------|------|-------------|
 | `egui` | Conceptual | Rules for writing and fixing egui/eframe code: the immediate-mode model, IDs, repaints, threads, persistence, and a table of APIs changed in 0.36. |
-| `egui-review` | Review | Runs `cargo clippy`, then four review agents in parallel: frame loop and repaint, IDs and widget state, API and Rust correctness, UX and accessibility. Read-only. |
+| `egui-review` | Review | Runs `cargo clippy`, then four review passes (parallel agents for large changes): frame loop and repaint, IDs and widget state, API and Rust correctness, UX and accessibility. Read-only. |
 | `egui-kittest` | Tool | Writes and runs `egui_kittest` UI tests: accessibility queries, simulated input, frame stepping, and image snapshots. |
 | `eframe-project` | Process | Sets up or changes an eframe app: Cargo features, renderer choice, `main.rs` and `App` layout, persistence, workspace split, and web builds. |
 | `egui-ui-design` | Conceptual | Designs or audits egui screens: layout, type scale through `TextStyle`, semantic colour through `Visuals`, keyboard use, and accessibility. |
@@ -43,6 +43,8 @@ skills/
 gemini-extension.json     # Gemini CLI extension manifest
 scripts/check_skills.py   # frontmatter and version checks, run in CI
 examples/snippets/        # every Rust snippet from the skills, compiled and tested in CI
+examples/manifests/       # every Cargo.toml snippet from the skills, resolved in CI
+evals/                    # with-skill vs without-skill agent runs
 CONTRIBUTING.md
 LICENSE
 ```

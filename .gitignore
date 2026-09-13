@@ -1,2 +1,4 @@
 .claude/
 target/
+# Resolved fresh in CI, so the check sees what users get.
+examples/manifests/Cargo.lock

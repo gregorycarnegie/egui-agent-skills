@@ -1,6 +1,9 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   check:
@@ -29,3 +32,19 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev
       - run: cargo clippy --locked --all-targets --all-features -- -D warnings
       - run: cargo test --locked --all-features
+
+  manifests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/manifests
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      # Resolving fails on any crate version or feature name that does not exist.
+      - run: cargo tree --workspace --target all -e features > /dev/null
+      # The glow-only recipe must keep winit's Wayland decorations and dlopen.
+      - run: |
+          cargo tree -p glow_app --target all -e features -i winit > winit.txt
+          grep -F 'winit feature "wayland-csd-adwaita"' winit.txt
+          grep -F 'winit feature "wayland-dlopen"' winit.txt

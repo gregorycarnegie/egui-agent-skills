@@ -24,7 +24,7 @@ impl eframe::App for MyApp {
     }
 }
 
-// skills/egui-kittest/SKILL.md:84, verbatim.
+// skills/egui-kittest/SKILL.md "Choose the harness", verbatim.
 use egui_kittest::{Harness, kittest::Queryable};
 
 #[test]
@@ -48,13 +48,13 @@ fn playback_keeps_repainting() {
         .build_eframe(|cc| MyApp::for_tests(cc));
     harness.run();
 
-    // skills/egui-kittest/SKILL.md:159, verbatim.
+    // skills/egui-kittest/SKILL.md "Advance frames", verbatim.
     harness.state_mut().playing = true;
     harness.step();
     assert!(harness.ctx.has_requested_repaint(), "playback should keep the UI repainting");
 }
 
-// SKILL.md:151: run() panics when the UI repaints every frame; run_steps does not.
+// "Advance frames": run() panics when the UI repaints every frame; run_steps does not.
 #[test]
 #[should_panic]
 fn run_panics_on_continuous_repaint() {
@@ -66,7 +66,7 @@ fn run_panics_on_continuous_repaint() {
     harness.run();
 }
 
-// Compile-only: SKILL.md:135 and :182 plus every name in the kittest tables.
+// Compile-only: the "Send input" and "Snapshots" blocks plus every name in the kittest tables.
 #[allow(dead_code, unused_must_use)]
 fn compile_only() {
     use egui_kittest::kittest::NodeT;

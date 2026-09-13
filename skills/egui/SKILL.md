@@ -11,7 +11,6 @@ compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents.
 metadata:
   author: egui-skills
-  version: "1.0"
   egui-version: "0.36"
   category: conceptual
 ---
@@ -54,6 +53,7 @@ Models often write the left column. It does not compile against egui 0.36.
 |---|---|
 | `impl eframe::App { fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) }` | `fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame)`. Work that draws nothing can go in the optional `fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame)`. |
 | `egui::SidePanel::left("id")`, `egui::TopBottomPanel::top("id")` | `egui::Panel::left("id")`, `Panel::right`, `Panel::top`, `Panel::bottom` |
+| `.default_width(..)`, `.min_width`, `.max_width`, `.width_range`, `.exact_width`, and the `_height` forms | `.default_size(..)`, `.min_size`, `.max_size`, `.size_range`, `.exact_size`, for every side |
 | `panel.show(ctx, ..)`, `CentralPanel::default().show(ctx, ..)` | `.show(ui, ..)`: panels take the parent `&mut Ui` |
 | `show_inside(ui, ..)` (deprecated) | `show(ui, ..)` |
 | `show_animated(ctx, open, ..)`, `show_animated_inside(..)` (deprecated) | `show_collapsible(ui, &mut open, ..)`. The panel may set `open` to `false` when the user drags it shut. |
@@ -127,6 +127,39 @@ widget's position in the order of calls.
 | Cache derived data | Sort, filter, parse, or build text layouts when the input changes (for example when `response.changed()`), not every frame. |
 | Create textures once | Call `ctx.load_texture(..)` once, keep the `TextureHandle` in your struct, and call `handle.set(..)` only when the image changes. |
 | Draw only visible rows | For long lists use `egui::ScrollArea::vertical().show_rows(ui, row_height, row_count, \|ui, range\| ..)` or `egui_extras::TableBuilder` body rows. |
+
+**Async work with tokio.** eframe's frame loop is not async, and
+`tokio::spawn` panics with "there is no reactor running" unless a runtime is
+entered. Create the runtime in `main` before `eframe::run_native`, and keep both
+values alive until it returns:
+
+```rust
+let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
+let _guard = rt.enter(); // lets tokio::spawn find the runtime
+```
+
+In `ui`, spawn the task, send its result over a `std::sync::mpsc` channel, and
+wake the UI. Never call `block_on` or `.await` in `ui`.
+
+```rust
+if let Ok(text) = self.result_rx.try_recv() {
+    self.result = Some(text);
+}
+egui::CentralPanel::default().show(ui, |ui| {
+    if ui.button("Fetch").clicked() {
+        let tx = self.result_tx.clone();
+        let ctx = ui.ctx().clone();
+        tokio::spawn(async move {
+            let text = fetch_text().await;
+            let _ = tx.send(text);
+            ctx.request_repaint();
+        });
+    }
+    if let Some(text) = &self.result {
+        ui.label(text);
+    }
+});
+```
 
 ### Responses and custom widgets
 
