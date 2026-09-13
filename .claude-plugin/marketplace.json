@@ -16,7 +16,7 @@
       "author": {
         "name": "egui-skills contributors"
       },
-      "license": "BSD-3-Clause",
+      "license": "MIT AND BSD-3-Clause",
       "category": "development",
       "keywords": ["egui", "eframe", "rust", "gui", "code-review", "testing", "kittest", "profiling"]
     }

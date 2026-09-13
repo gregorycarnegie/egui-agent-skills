@@ -84,6 +84,6 @@ gemini extensions install <path-or-git-url>
 
 ## License
 
-BSD-3-Clause. See [LICENSE](LICENSE). This repository started as a fork of the Qt
-AI Skills repository by The Qt Company Ltd.; the license requires keeping its
-copyright notice.
+MIT, with Qt-derived portions under BSD-3-Clause. See [LICENSE](LICENSE).
+This repository started as a fork of the Qt AI Skills repository by The Qt
+Company Ltd.; its notice is kept in the same file.

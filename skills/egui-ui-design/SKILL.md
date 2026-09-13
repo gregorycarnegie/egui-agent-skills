@@ -5,7 +5,7 @@ description: >-
   web. Use when creating screens, layouts, navigation, dialogs, or themes, or
   when auditing UX and accessibility. Maps design rules to egui's Style,
   Visuals, TextStyle, and layout tools.
-license: BSD-3-Clause
+license: MIT AND BSD-3-Clause
 compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents.
 metadata:

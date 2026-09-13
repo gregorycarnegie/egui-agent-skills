@@ -17,7 +17,7 @@ else is optional.
      What the skill does and when an agent should use it, including the words
      a user would say. Put the key information in the first 250 characters;
      some tools cut off the rest.
-   license: BSD-3-Clause
+   license: MIT
    compatibility: >-
      Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents.
    metadata:

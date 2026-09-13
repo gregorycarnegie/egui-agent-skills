@@ -6,7 +6,7 @@ description: >-
   clippy, then four review agents in parallel: frame loop and repaint, IDs and
   widget state, API and Rust correctness, UX and accessibility. Reports only
   high-confidence issues. Read-only.
-license: BSD-3-Clause
+license: MIT AND BSD-3-Clause
 compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents that
   can run cargo.

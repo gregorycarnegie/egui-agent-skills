@@ -6,7 +6,7 @@ description: >-
   persistence, workspace layout, and web builds. Use for "new egui app", "set
   up eframe", "add persistence", "switch to glow", "build for the web", or
   Cargo.toml changes in an egui project.
-license: BSD-3-Clause
+license: MIT
 compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents.
 metadata:

@@ -6,7 +6,7 @@ description: >-
   egui 0.36 (App::update, SidePanel, Frame::none) and common immediate-mode
   mistakes: ID clashes, missing repaints, blocking the frame, per-frame resource
   creation. Not for purely conversational questions with no code.
-license: BSD-3-Clause
+license: MIT AND BSD-3-Clause
 compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents.
 metadata:

@@ -6,7 +6,7 @@ description: >-
   or optimise an egui app. Finds continuous repaints, profiles with samply or
   the profiling crate (puffin or Tracy), and maps hotspots to known egui causes
   and fixes.
-license: BSD-3-Clause
+license: MIT
 compatibility: >-
   Designed for Claude Code, Codex CLI, and similar agents that can run cargo
   and a profiler on the user's machine.

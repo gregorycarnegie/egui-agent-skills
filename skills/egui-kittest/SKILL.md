@@ -5,7 +5,7 @@ description: >-
   "test this widget", "write a UI test", "kittest", "snapshot test", "update
   snapshots", or when a UI change needs a test. Covers Harness setup,
   accessibility queries, simulated input, frame stepping, and image snapshots.
-license: BSD-3-Clause
+license: MIT
 compatibility: >-
   Designed for Claude Code, Codex CLI, GitHub Copilot, and similar agents that
   can run cargo test.
