@@ -41,6 +41,8 @@ skills/
   egui-profiler/SKILL.md
 .claude-plugin/           # Claude Code and Copilot CLI plugin manifests
 gemini-extension.json     # Gemini CLI extension manifest
+scripts/check_skills.py   # frontmatter and version checks, run in CI
+examples/snippets/        # every Rust snippet from the skills, compiled and tested in CI
 CONTRIBUTING.md
 LICENSE
 ```
@@ -49,10 +51,10 @@ LICENSE
 
 ### Claude Code
 
-Install as a plugin from a local checkout or a git URL:
+Install as a plugin:
 
 ```
-/plugin marketplace add <path-or-git-url>
+/plugin marketplace add gregorycarnegie/egui-agent-skills
 /plugin install egui-development-skills
 ```
 
@@ -79,7 +81,7 @@ projects). Copilot also finds skills installed for Claude Code under
 ### Gemini CLI
 
 ```bash
-gemini extensions install <path-or-git-url>
+gemini extensions install https://github.com/gregorycarnegie/egui-agent-skills
 ```
 
 ## License

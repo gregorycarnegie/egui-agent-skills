@@ -56,13 +56,14 @@ Models often write the left column. It does not compile against egui 0.36.
 | `egui::SidePanel::left("id")`, `egui::TopBottomPanel::top("id")` | `egui::Panel::left("id")`, `Panel::right`, `Panel::top`, `Panel::bottom` |
 | `panel.show(ctx, ..)`, `CentralPanel::default().show(ctx, ..)` | `.show(ui, ..)`: panels take the parent `&mut Ui` |
 | `show_inside(ui, ..)` (deprecated) | `show(ui, ..)` |
-| `show_animated(ctx, open, ..)`, `show_animated_inside(..)` | `show_collapsible(ui, &mut open, ..)`. The panel may set `open` to `false` when the user drags it shut. |
+| `show_animated(ctx, open, ..)`, `show_animated_inside(..)` (deprecated) | `show_collapsible(ui, &mut open, ..)`. The panel may set `open` to `false` when the user drags it shut. |
 | `show_animated_between(..)` | `Panel::show_switched(ui, &mut expanded, collapsed_panel, ..)` |
 | `ctx.run(raw_input, \|ctx\| ..)` | `ctx.run_ui(raw_input, \|ui\| ..)` |
 | `eframe::run_simple_native(name, options, \|ctx, frame\| ..)` | `eframe::run_ui_native(name, options, \|ui, frame\| ..)` |
+| `ctx.show_viewport_immediate(id, builder, \|ctx, class\| ..)`, same for `show_viewport_deferred` | The callback takes `\|ui, class\|` with a `&mut Ui`. Wrap its content in `CentralPanel::default().show(ui, ..)`. |
 | `egui::Frame::none()` | `egui::Frame::NONE` |
 | `egui::Rounding` | `egui::CornerRadius` |
-| `.id_source(..)`, `ComboBox::from_id_source(..)` | `.id_salt(..)`, `ComboBox::from_id_salt(..)` |
+| `.id_source(..)`, `ComboBox::from_id_source(..)` | `.id_salt(..)`, `ComboBox::from_id_salt(..)`. `TextEdit::id_source` still compiles as an alias. |
 | `ui.close_menu()` | `ui.close()` |
 | `ui.allocate_ui_at_rect(rect, ..)`, `ui.allocate_new_ui(..)` | `ui.scope_builder(egui::UiBuilder::new().max_rect(rect), ..)` |
 | `egui::menu::bar(ui, ..)` | `egui::MenuBar::new().ui(ui, ..)` |
@@ -194,8 +195,33 @@ as window positions and open sections, unless `App::persist_egui_memory` returns
 ### Windows and closing
 
 - `egui::Window` is a floating panel inside the app's window. A separate OS
-  window is a viewport: `ctx.show_viewport_deferred(..)` or
-  `ctx.show_viewport_immediate(..)`.
+  window is a viewport. Call `show_viewport_immediate` every frame while the
+  window should be open; stop calling it to close the window:
+
+  ```rust
+  if self.show_settings {
+      ui.ctx().show_viewport_immediate(
+          egui::ViewportId::from_hash_of("settings"),
+          egui::ViewportBuilder::default()
+              .with_title("Settings")
+              .with_inner_size([320.0, 240.0]),
+          |ui, _class| {
+              egui::CentralPanel::default().show(ui, |ui| {
+                  ui.label("Settings go here");
+              });
+              if ui.ctx().input(|i| i.viewport().close_requested()) {
+                  self.show_settings = false;
+              }
+          },
+      );
+  }
+  ```
+
+  Where the backend cannot open more windows (web, `egui_kittest`), the
+  callback runs inside an `egui::Window` instead. Use `show_viewport_deferred`
+  only when the child must repaint without the parent. Its callback must be
+  `Fn + Send + Sync + 'static`, so state it changes goes in an
+  `Arc<Mutex<..>>`.
 - To stop the app from closing, for example with unsaved changes, check
   `ui.ctx().input(|i| i.viewport().close_requested())` and send
   `egui::ViewportCommand::CancelClose`.

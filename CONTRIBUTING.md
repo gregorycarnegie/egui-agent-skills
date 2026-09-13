@@ -36,6 +36,10 @@ else is optional.
   folder and link to them from `SKILL.md`.
 - Cover what models get wrong, not what they already do well.
 - Show the correct pattern in a short code example, and say why it is correct.
+- Copy every ` ```rust ` block into a file under `examples/snippets/src/`, line
+  for line (indentation may differ), with any glue it needs around it. CI
+  compiles and tests that crate, and `scripts/check_skills.py` fails if a block
+  is missing from it.
 - **Check every API name against the crate source.** egui changes its API
   between minor versions, and models remember old names. After `cargo fetch`,
   the source is in `~/.cargo/registry/src/*/egui-<version>/src/`. Search it
@@ -45,7 +49,10 @@ else is optional.
 
 ## Test
 
-1. Paste the frontmatter into a YAML validator.
+1. Run `python scripts/check_skills.py` (needs PyYAML; CI runs it on every
+   push). It checks the frontmatter, the folder name, the README row, the
+   500-line limit, that every Rust block is in `examples/snippets/`, and that
+   the four plugin versions match.
 2. Check that every file the skill links to exists.
 3. Install the skill in an agent. Give it a real egui task that uses the trigger
    words from the description. Check that the skill loads and that the code it

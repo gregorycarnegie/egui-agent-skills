@@ -143,7 +143,8 @@ Check for:
 Check for:
 
 - APIs removed in egui/eframe 0.36: `App::update`, `SidePanel`,
-  `TopBottomPanel`, `Frame::none()`, `Rounding`, `id_source`, `close_menu`,
+  `TopBottomPanel`, `Frame::none()`, `Rounding`, `ComboBox::from_id_source`,
+  `id_source` (except on `TextEdit`, where it is still an alias), `close_menu`,
   `allocate_ui_at_rect`, `run_simple_native`, `Context::run`. These fail to
   compile, so report them here only if Phase 1 could not run. Also flag the
   deprecated `show_inside`, `show_animated_inside`, and
