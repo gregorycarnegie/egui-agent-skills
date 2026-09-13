@@ -1,0 +1,5 @@
+{
+  "name": "egui-skills",
+  "version": "0.1.0",
+  "description": "Agentic engineering skills for Rust GUI development with egui and eframe"
+}
