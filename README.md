@@ -2,7 +2,7 @@
 
 Agent skills for building Rust GUI apps with [egui](https://github.com/emilk/egui)
 and [eframe](https://github.com/emilk/egui/tree/main/crates/eframe). They work with
-AI coding tools such as Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot.
+AI coding tools such as Claude Code, Codex CLI, GitHub Copilot, and Google Antigravity.
 
 The skills target **egui 0.36**. That release removed or renamed many APIs that
 models still suggest, such as `App::update`, `SidePanel`, and `Frame::none()`. When
@@ -81,7 +81,24 @@ Copy a skill into `.github/skills/` (one project) or `~/.copilot/skills/` (all
 projects). Copilot also finds skills installed for Claude Code under
 `.claude/skills/`.
 
+### Google Antigravity
+
+Link a skill into the global skills folder, which the Antigravity app, IDE, and
+CLI all read:
+
+```bash
+mkdir -p ~/.gemini/config/skills
+ln -s "$(pwd)/skills/egui" ~/.gemini/config/skills/egui
+```
+
+For one project only, put the skill folder in `.agents/skills/` at the workspace
+root instead.
+
 ### Gemini CLI
+
+Gemini CLI stopped serving individual accounts (including Google AI Pro and
+Ultra) on June 18, 2026. It still works with paid Gemini API keys and Gemini Code
+Assist Standard or Enterprise. Everyone else should use Antigravity.
 
 ```bash
 gemini extensions install https://github.com/gregorycarnegie/egui-agent-skills
@@ -101,9 +118,11 @@ To hear about them, watch the repository and choose Releases.
   claude plugin update egui-development-skills
   ```
 
-- **Linked skills** (Claude Code, Codex, Copilot): run `git pull` in your clone.
+- **Linked skills** (Claude Code, Codex, Copilot, Antigravity): run `git pull`
+  in your clone.
 - **Copied skills**: run `git pull`, then copy the skill folders again.
-- **Gemini CLI**: run `gemini extensions update egui-skills`, or
+- **Gemini CLI** (paid API keys, Code Assist Standard or Enterprise): run
+  `gemini extensions update egui-skills`, or
   `gemini extensions update --all`. To update automatically, add
   `--auto-update` to the install command.
 

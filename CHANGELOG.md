@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Installation instructions for Google Antigravity, which reads Agent Skills
+  from `~/.gemini/config/skills/` or a workspace's `.agents/skills/`. Gemini CLI
+  stopped serving individual accounts on June 18, 2026, so the README now says
+  who can still use the Gemini extension.
+
 ## [0.3.0] - 2026-09-13
 
 ### Added
