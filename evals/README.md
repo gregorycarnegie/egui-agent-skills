@@ -43,3 +43,35 @@ Limits: three runs per case is a small sample, and the `glow` check looks for
 the skill's own fix, so it tests whether the advice is followed more than
 whether it is right. The recipe itself is confirmed separately, by the manifests
 job in CI.
+
+## `egui-ui-design` cases: 2026-09-13, 3 runs per case, two rounds
+
+Round 1 used the skill's earlier description. Round 2 used the current one,
+which names dialogs, confirmations, and error messages. In round 2 the `egui`
+skill also points to `egui-ui-design` for anything users see.
+
+| Case | Round | With skills | Without | `egui-ui-design` loaded | Cost with | Cost without |
+|---|---|---|---|---|---|---|
+| `delete-confirm` | 1 | 3/3 | 0/3 | 0/3 | $1.38 | $0.54 |
+| `delete-confirm` | 2 | 3/3 | 2/3 | 3/3 | $0.89 | $0.53 |
+| `load-error` | 1 | 3/3 | 3/3 | 0/3 | $0.62 | $0.48 |
+| `load-error` | 2 | 3/3 | 3/3 | 0/3 | $0.63 | $0.43 |
+
+What this shows:
+
+- **The description decides whether the skill helps at all.** With the old
+  description, `egui-ui-design` never loaded, not even for a confirmation
+  dialog. The new one loaded it in every `delete-confirm` run.
+- **`delete-confirm`**: all 6 runs with skills used an `egui::Modal`; 4 of 6
+  runs without skills built the confirmation some other way. Round 1 runs with
+  skills used a `Modal` without loading `egui-ui-design`, so part of the gain
+  comes from elsewhere in the plugin. No run in either arm labelled buttons
+  "Yes", "No", or "OK", so the wording rule was not tested by this case.
+- **`load-error`**: no difference, and `egui-ui-design` did not load. The model
+  already uses `error_fg_color` and avoids apologies without help, so this case
+  measures nothing yet.
+- Loading skills costs tokens: on these small tasks, runs with skills cost more.
+
+Limits: three runs per round is a small sample, the `Modal` check follows the
+skill's own advice, and runs with skills sometimes also load Claude Code's
+built-in `run` skill, which tries to launch the app and is denied.

@@ -55,6 +55,20 @@ CASES = {
             r"wayland-csd-adwaita",
         ],
     },
+    # egui-ui-design: confirmation dialogs name the action and block the window.
+    "delete-confirm": {
+        "prompt": "Keep a list of five file names and show them. Add a way to delete all "
+        "of them, and ask the user to confirm first.",
+        "forbid": [r'"(Yes|No|OK|Ok)"', r"fn update\s*\("],
+        "require": [r"Modal"],
+    },
+    # egui-ui-design: errors use the theme's error colour and say what happened.
+    "load-error": {
+        "prompt": "Add a Load settings button that reads settings.toml from the current "
+        "folder and shows its text. If reading fails, show the problem to the user.",
+        "forbid": [r"Color32::(RED|from_rgb)", r":\?\}", r"(?i)something went wrong|sorry|oops"],
+        "require": [r"error_fg_color"],
+    },
 }
 
 TOOLS = ["Read", "Edit", "Write", "Glob", "Grep", "Skill", "Bash(cargo:*)"]
@@ -68,7 +82,7 @@ def starter(work: Path) -> None:
     (work / "src/main.rs").write_text(main.split("\n// Everything above")[0] + "\n", encoding="utf-8")
 
 
-def run_agent(work: Path, prompt: str, with_skills: bool, model: str | None) -> tuple[bool, dict]:
+def run_agent(work: Path, prompt: str, with_skills: bool, model: str | None) -> tuple[set[str], dict]:
     cmd = [
         shutil.which("claude") or "claude", "-p", prompt,
         "--output-format", "stream-json", "--verbose", "--no-session-persistence",
@@ -80,26 +94,29 @@ def run_agent(work: Path, prompt: str, with_skills: bool, model: str | None) -> 
         cmd += ["--plugin-dir", str(root)]
     if model:
         cmd += ["--model", model]
-    out = subprocess.run(cmd, cwd=work, env=env, capture_output=True, text=True, encoding="utf-8", timeout=1800)
-    skill_used, result = False, {}
+    out = subprocess.run(
+        cmd, cwd=work, env=env, capture_output=True, text=True, encoding="utf-8", timeout=1800, check=False
+    )
+    skills, result = set(), {}
     for line in out.stdout.splitlines():
         try:
             event = json.loads(line)
         except json.JSONDecodeError:
             continue
         if event.get("type") == "assistant":
-            content = event["message"]["content"]
-            skill_used |= any(c.get("type") == "tool_use" and c.get("name") == "Skill" for c in content)
+            for c in event["message"]["content"]:
+                if c.get("type") == "tool_use" and c.get("name") == "Skill":
+                    skills.add(c["input"].get("skill", "?").split(":")[-1])
         elif event.get("type") == "result":
             result = event
-    return skill_used, result
+    return skills, result
 
 
 def grade(work: Path, case: dict) -> list[str]:
     fails = []
     check = subprocess.run(
         ["cargo", "check", "--quiet", "--message-format=short"],
-        cwd=work, env=env, capture_output=True, text=True, encoding="utf-8",
+        cwd=work, env=env, capture_output=True, text=True, encoding="utf-8", check=False,
     )
     if check.returncode:
         fails.append("cargo check: " + next((l for l in check.stderr.splitlines() if "error" in l), "failed"))
@@ -116,7 +133,7 @@ parser.add_argument("--runs", type=int, default=1)
 parser.add_argument("--model")
 args = parser.parse_args()
 
-print("| Case | Skills | Pass | Skill tool used | Turns | Denied tools | Cost | Failures |")
+print("| Case | Skills | Pass | Skills loaded | Turns | Denied tools | Cost | Failures |")
 print("|---|---|---|---|---|---|---|---|")
 totals = {}
 for name in args.case or CASES:
@@ -133,7 +150,7 @@ for name in args.case or CASES:
             passed, runs, spent = totals.get(arm, (0, 0, 0.0))
             totals[arm] = (passed + (not fails), runs + 1, spent + cost)
             print(
-                f"| {name} | {arm} | {'no' if fails else 'yes'} | {'yes' if used else 'no'} "
+                f"| {name} | {arm} | {'no' if fails else 'yes'} | {', '.join(sorted(used)) or 'none'} "
                 f"| {result.get('num_turns', '?')} | {len(result.get('permission_denials', []))} "
                 f"| ${cost:.2f} | {'; '.join(fails)} |",
                 flush=True,

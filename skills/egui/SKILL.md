@@ -20,7 +20,9 @@ metadata:
 ## How to apply this skill
 
 **Writing code**: write the smallest code that does what was asked. Follow the
-rules below without listing them in the response.
+rules below without listing them in the response. When the change adds or alters
+something users see, such as a dialog, form, error message, or theme, also apply
+the `egui-ui-design` skill.
 
 **Working in an existing project**: match its structure and naming. If the
 project breaks a rule consistently and for a visible reason, follow the project

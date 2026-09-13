@@ -134,3 +134,59 @@ fn native_options() -> eframe::Result {
         ui.label("tool");
     })
 }
+
+struct Editor;
+
+impl Editor {
+    fn save(&mut self) {}
+
+    // skills/egui-ui-design/SKILL.md "1.2 Buttons and input", verbatim.
+    fn primary_button(&mut self, ui: &mut egui::Ui) {
+        let selection = ui.visuals().selection;
+        let save = egui::Button::new(egui::RichText::new("Save changes").color(selection.stroke.color))
+            .fill(selection.bg_fill);
+        if ui.add(save).clicked() {
+            self.save();
+        }
+    }
+}
+
+#[derive(PartialEq)]
+enum Tab {
+    Files,
+    Search,
+}
+
+// Inline API names from skills/egui-ui-design.
+fn ui_design_names(ui: &mut egui::Ui, tab: &mut Tab, volume: &mut u8, undoer: &mut egui::util::undoer::Undoer<u8>) {
+    const SAVE: egui::KeyboardShortcut = egui::KeyboardShortcut::new(egui::Modifiers::COMMAND, egui::Key::S);
+    ui.selectable_value(tab, Tab::Files, "Files");
+    ui.ctx().send_viewport_cmd(egui::ViewportCommand::Title("notes.txt".into()));
+    ui.set_max_width(600.0);
+    ui.add(egui::DragValue::new(volume).range(0..=100));
+    ui.add(egui::Slider::new(volume, 0..=100));
+    ui.add_enabled(false, egui::Button::new("Save")).on_disabled_hover_text("Nothing to save");
+    undoer.feed_state(ui.input(|i| i.time), volume);
+    undoer.undo(volume);
+    ui.input_mut(|i| i.consume_shortcut(&SAVE));
+    ui.add(egui::Button::new("Save").shortcut_text(ui.ctx().format_shortcut(&SAVE)));
+    ui.add(egui::Spinner::new());
+    ui.add(egui::ProgressBar::new(0.5));
+    let response = ui.allocate_response(egui::vec2(24.0, 24.0), egui::Sense::click());
+    response.has_focus();
+    response.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, "Play"));
+    ui.allocate_response(egui::vec2(24.0, 24.0), egui::Sense::hover()).on_hover_text("Help");
+    egui::Modal::new(egui::Id::new("confirm")).show(ui.ctx(), |ui| {}).should_close();
+    ui.ctx().options(|o| o.zoom_with_keyboard);
+    ui.ctx().set_visuals_of(egui::Theme::Light, egui::Visuals::light());
+    ui.ctx().animate_bool_responsive(egui::Id::new("open"), true);
+    ui.ctx().animate_value_with_time(egui::Id::new("x"), 1.0, 0.2);
+    ui.ctx().all_styles_mut(|style| style.animation_time = 0.0);
+    ui.add_sized([120.0, 24.0], egui::Button::new("Export"));
+    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+        ui.button("Save changes");
+        ui.button("Cancel");
+    });
+    let v = ui.visuals();
+    let _ = (v.panel_fill, v.window_fill, v.extreme_bg_color, v.code_bg_color, v.faint_bg_color);
+}

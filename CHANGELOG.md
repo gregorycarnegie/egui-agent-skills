@@ -2,6 +2,37 @@
 
 ## Unreleased
 
+### Added
+
+- `egui-ui-design`: an Interface wording section, a step that renders the
+  screen with `egui_kittest` in both themes and reviews the PNGs, and a rule
+  that frames mark real groups only. The ideas come from the frontend-design
+  skill, rewritten for egui.
+- Eval cases `delete-confirm` and `load-error` for `egui-ui-design`, and a column
+  showing which skills each run loaded.
+- CI runs the render test with Mesa's lavapipe software Vulkan driver.
+
+### Changed
+
+- `egui-ui-design` now focuses on egui specifics. General UX advice that models
+  already follow was cut. New rules cover marking the primary button, dialog
+  button order in right-to-left layouts, `Undoer`, shortcuts shown in menus,
+  keyboard zoom, and accessible names for custom widgets. Every API it names is
+  compile-checked, and its behaviour claims were checked against the egui
+  0.36.2 source.
+
+- `egui-ui-design`'s description now names everyday tasks (dialogs,
+  confirmations, forms, error messages), and the `egui` skill points to it for
+  anything users see. With the old description it loaded in none of 6 eval
+  runs; with the new one it loads for confirmation dialogs, but not yet for
+  error messages.
+- `scripts/check_skills.py` writes errors to stderr.
+
+### Removed
+
+- The AI features section of `egui-ui-design`, which had no egui-specific
+  advice.
+
 ### Fixed
 
 - `egui-ui-design` now has the Guardrails section the other skills have. Its

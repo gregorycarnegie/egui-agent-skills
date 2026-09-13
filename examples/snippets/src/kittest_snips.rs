@@ -66,6 +66,22 @@ fn run_panics_on_continuous_repaint() {
     harness.run();
 }
 
+// skills/egui-ui-design/SKILL.md "3. Look at the rendered screen", verbatim.
+#[test]
+#[ignore = "renders PNGs for review"]
+fn render_for_review() {
+    for (theme, name) in [(egui::Theme::Dark, "dark"), (egui::Theme::Light, "light")] {
+        let mut harness = Harness::builder()
+            .with_size(egui::vec2(480.0, 320.0)) // the smallest supported window
+            .with_theme(theme)
+            .build_eframe(|cc| MyApp::for_tests(cc));
+        harness.run();
+        let path = std::env::temp_dir().join(format!("ui-review-{name}.png"));
+        harness.render().expect("needs a graphics adapter").save(&path).unwrap();
+        eprintln!("{}", path.display());
+    }
+}
+
 // Compile-only: the "Send input" and "Snapshots" blocks plus every name in the kittest tables.
 #[allow(dead_code, unused_must_use)]
 fn compile_only() {
@@ -104,6 +120,7 @@ fn compile_only() {
     harness.try_run();
     harness.mask(egui::Rect::ZERO);
     harness.take_snapshot_results();
+    harness.ctx.set_zoom_factor(1.5);
 
     Harness::new_ui(|ui| {
         ui.label("x");

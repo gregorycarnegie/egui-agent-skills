@@ -91,7 +91,7 @@ if not skills:
     errors.append("no skills found under skills/")
 
 for error in errors:
-    print(f"error: {error}")
+    print(f"error: {error}", file=sys.stderr)
 if errors:
     sys.exit(1)
 print(f"ok: {len(skills)} skills, version {next(iter(versions.values()))}")

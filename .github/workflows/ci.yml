@@ -29,9 +29,12 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: examples/snippets
-      - run: sudo apt-get update && sudo apt-get install -y libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev
+      # mesa-vulkan-drivers provides lavapipe, a software Vulkan driver for the render test.
+      - run: sudo apt-get update && sudo apt-get install -y libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev mesa-vulkan-drivers
       - run: cargo clippy --locked --all-targets --all-features -- -D warnings
       - run: cargo test --locked --all-features
+      # The review render in skills/egui-ui-design is #[ignore]d for users; prove it works here.
+      - run: cargo test --locked --all-features -- --ignored
 
   manifests:
     runs-on: ubuntu-latest

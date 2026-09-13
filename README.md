@@ -19,7 +19,7 @@ version's crate source before using them.
 | `egui-review` | Review | Runs `cargo clippy`, then four review passes (parallel agents for large changes): frame loop and repaint, IDs and widget state, API and Rust correctness, UX and accessibility. Read-only. |
 | `egui-kittest` | Tool | Writes and runs `egui_kittest` UI tests: accessibility queries, simulated input, frame stepping, and image snapshots. |
 | `eframe-project` | Process | Sets up or changes an eframe app: Cargo features, renderer choice, `main.rs` and `App` layout, persistence, workspace split, and web builds. |
-| `egui-ui-design` | Conceptual | Designs or audits egui screens: layout, type scale through `TextStyle`, semantic colour through `Visuals`, keyboard use, and accessibility. |
+| `egui-ui-design` | Conceptual | Designs or audits egui screens: layout, primary buttons and dialogs, interface wording, `Visuals` colours, `TextStyle` sizes, keyboard use, and accessibility, then checks a rendered screenshot. |
 | `egui-profiler` | Tool | Finds why an egui app is slow or uses CPU when idle: repaint causes, `samply`, `profiling` scopes with puffin or Tracy, and a list of common causes. |
 
 Skill types:
